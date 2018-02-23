@@ -3,11 +3,12 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @user = User.new(:name => "Example User", :email => "user@example.net")
+    @user = User.new(:name => "Example User", :email => "user@example.net",
+                     :password => "foobar12", :password_confirmation => "foobar12")
   end
   
   test "basic validation" do
-    assert @user.valid?
+    assert @user.valid?, "Failed with #{@user.errors.full_messages}"
   end
 
   test "name should be present" do
@@ -29,7 +30,7 @@ class UserTest < ActiveSupport::TestCase
     addresses = %w[user@example.com USER@FOO.COM U-S-E-R@foo.com U_SE-R@foo.com.jp first.last@xyz.jj first+last@xyz.jj.yy]
     addresses.each do |a|
       @user.email = a
-      assert @user.valid?, "#{a.inspect} is not valid"
+      assert @user.valid?, "#{a.inspect} is not valid. #{@user.errors.full_messages}"
     end
   end
 
@@ -54,5 +55,14 @@ class UserTest < ActiveSupport::TestCase
     @user.save
     assert_equal mixed_case.downcase, @user.reload.email, "#{@user.email} was not downcased on save"
   end
-  
+
+  test "password should not be blank" do
+    @user.password = @user.password_confirmation = " " * 10
+    assert_not @user.valid?, "Blank password accepted!"
+  end
+
+  test "password should have a minimum length" do
+    @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?, "Password less than min length accepted!"
+  end
 end
