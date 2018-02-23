@@ -3,6 +3,12 @@
 
 $gray-medium-light: #eaeaea;
 
+@mixin box-sizing {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 body {
     padding-top: 60px;
 }
@@ -95,4 +101,43 @@ footer {
   
 }
 
+.debug_dump {
+    clear: both;
+    float: left;
+    width: 100%;
+    margin-top: 45px;
+    @include box-sizing;
+}
 
+
+/* aside */
+
+aside {
+    section.user_info {
+	margin-top: 20px;
+    }
+
+    section {
+	&:first-child {
+	    border: 0;
+	    padding-top: 0;
+	}
+
+	h1 {
+	    font-size: 1.4em;
+	    text-align: left;
+	    letter-spacing: -1px;
+	    margin-bottom: 3px;
+	    margin-top: 0px;
+	}
+    }
+}
+
+.gravatar {
+    float: left;
+    margin-right: 10px;
+}
+
+// .gravatar_edit {
+//     margin-top: 15px;
+// }
