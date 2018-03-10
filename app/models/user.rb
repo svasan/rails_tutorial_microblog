@@ -6,4 +6,9 @@ class User < ApplicationRecord
             :format => {:with => VALID_EMAIL_REGEX}, :uniqueness => {:case_sensitive => false}
   has_secure_password
   validates :password, :presence => true, :length => {:minimum => 8}
+
+  def User.digest(s)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(s, cost: cost)
+  end
 end
