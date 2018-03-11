@@ -2,7 +2,7 @@ module SessionsHelper
 
   def log_in(user)
     session[:user_id] = user.id
-    remember user
+    remember user if params[:session] && params[:session][:remember_me] == '1'
   end
 
   def remember(user)
