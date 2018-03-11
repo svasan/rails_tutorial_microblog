@@ -6,7 +6,7 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(:name => "Example User", :email => "user@example.net",
                      :password => "foobar12", :password_confirmation => "foobar12")
   end
-  
+
   test "basic validation" do
     assert @user.valid?, "Failed with #{@user.errors.full_messages}"
   end
@@ -20,7 +20,7 @@ class UserTest < ActiveSupport::TestCase
     @user.name = "a" * 256
     assert_not @user.valid?
   end
-  
+
   test "email too long" do
     @user.email = "a" * 244 + "@example.com"
     assert_not @user.valid?
@@ -64,5 +64,9 @@ class UserTest < ActiveSupport::TestCase
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?, "Password less than min length accepted!"
+  end
+
+  test "authenticated? should handle nil digest" do
+    @user.authenticated?('')
   end
 end
