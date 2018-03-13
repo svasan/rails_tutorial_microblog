@@ -41,34 +41,21 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
 
   test 'login with remember' do
-    post login_path, params: {
-           session: {
-             email: @user.email,
-             password: "password",
-             remember_me: "1"
-           }
-         }
+    log_in_as @user, remember_me: '1'
     assert is_logged_in?
-    assert is_remembered?
+    assert remembered?
     follow_redirect!
 
     delete logout_path
     follow_redirect!
 
     assert_not is_logged_in?
-    # Why doesn't this work.
-    # assert_not is_remembered?
+    assert_not remembered?
   end
 
   test 'login without remember' do
-    post login_path, params: {
-           session: {
-             email: @user.email,
-             password: "password",
-             remember_me: "0"
-           }
-         }
+    log_in_as @user, remember_me: '0'
     assert is_logged_in?
-    assert_not is_remembered?
+    assert_not remembered?
   end
 end
