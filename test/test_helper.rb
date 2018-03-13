@@ -13,4 +13,8 @@ class ActiveSupport::TestCase
   def is_logged_in?
     session.has_key?(:user_id)
   end
+
+  def is_remembered?
+    !cookies[:remember_token].nil? && !cookies[:user_id].nil?
+  end
 end

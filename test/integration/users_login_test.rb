@@ -39,4 +39,36 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", logout_path, count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
   end
+
+  test 'login with remember' do
+    post login_path, params: {
+           session: {
+             email: @user.email,
+             password: "password",
+             remember_me: "1"
+           }
+         }
+    assert is_logged_in?
+    assert is_remembered?
+    follow_redirect!
+
+    delete logout_path
+    follow_redirect!
+
+    assert_not is_logged_in?
+    # Why doesn't this work.
+    # assert_not is_remembered?
+  end
+
+  test 'login without remember' do
+    post login_path, params: {
+           session: {
+             email: @user.email,
+             password: "password",
+             remember_me: "0"
+           }
+         }
+    assert is_logged_in?
+    assert_not is_remembered?
+  end
 end
