@@ -40,4 +40,19 @@ module SessionsHelper
     cookies.delete :user_id
     cookies.delete :remember_token
   end
+
+  def redirect_for_login
+    session[:original_url] = request.original_url if request.get?
+    redirect_to login_url
+  end
+
+  def redirected_for_login?
+    session.has_key?(:original_url)
+  end
+
+  def redirect_back
+    to = session[:original_url] || root_url
+    session.delete(:original_url)
+    redirect_to to
+  end
 end
