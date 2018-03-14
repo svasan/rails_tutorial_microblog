@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  before_action :require_login, :current_user?, only: [:edit, :update]
+
   def show
     @user = User.find(params[:id])
   end
@@ -40,4 +42,16 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
+  def require_login
+    unless logged_in?
+      flash[:danger] = "Please log in"
+      redirect_for_login
+    end
+  end
+
+  def current_user?
+    unless User.find(params[:id]) == current_user
+      redirect_to root_url
+    end
+  end
 end
