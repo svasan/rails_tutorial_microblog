@@ -67,6 +67,6 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "authenticated? should handle nil digest" do
-    @user.authenticated?('')
+    @user.authenticated?(:remember, '')
   end
 end
