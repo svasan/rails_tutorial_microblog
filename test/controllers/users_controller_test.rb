@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user_foo = users(:foobar)
+    @admin = users(:foobar)
     @user_joe = users(:joe)
   end
 
@@ -28,5 +28,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       }
     }
     assert_not @user_joe.reload.admin?
+  end
+
+  test "destroy should redirect if not logged in" do
+    assert_no_difference "User.count" do
+      delete user_path(@admin)
+    end
+    assert_redirected_to login_url
+  end
+
+  test "destroy should redirect if not admin user" do
+    log_in_as(@user_joe)
+    assert_no_difference "User.count" do
+      delete user_path(@admin)
+    end
+    assert_redirected_to root_path
   end
 end
