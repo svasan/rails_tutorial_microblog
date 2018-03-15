@@ -3,6 +3,7 @@ foobar:
   name: Foobar User
   email: foobar@example.com
   password_digest: <%= User.digest('password') %>
+  admin: true
 
 joe:
   name: Joe Random
