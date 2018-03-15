@@ -41,6 +41,10 @@ module SessionsHelper
     cookies.delete :remember_token
   end
 
+  def current_user?(user)
+    current_user == user
+  end
+
   def redirect_for_login
     session[:original_url] = request.original_url if request.get?
     redirect_to login_url
