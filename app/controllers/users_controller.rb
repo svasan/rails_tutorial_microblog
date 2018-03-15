@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
 
-  before_action :require_login, :current_user?, only: [:edit, :update]
+  before_action :require_login, only: [:index, :edit, :update]
+  before_action :current_user?, only: [:edit, :update]
+
+  def index
+    @users = User.all
+  end
 
   def show
     @user = User.find(params[:id])
