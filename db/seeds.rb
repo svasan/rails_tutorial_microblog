@@ -8,7 +8,8 @@
 User.create!(name: "Test User",
              email: "test@user.com",
              password: "qwert1234",
-             password_confirmation: "qwert1234")
+             password_confirmation: "qwert1234",
+             admin: true)
 User.create!(name: "Example User",
              email: "example@railstutorial.org",
              password: "password",
