@@ -1,5 +1,7 @@
 class User < ApplicationRecord
 
+  has_many :microposts, dependent: :destroy
+
   attr_accessor :remember_token, :activation_token, :reset_token
 
   validates :name, :presence => true, :length => {:maximum => 255}
@@ -13,8 +15,6 @@ class User < ApplicationRecord
 
   before_save :downcase_email
   before_create :create_activation_token
-
-  has_many :microposts
 
   def User.digest(s)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
