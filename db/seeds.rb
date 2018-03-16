@@ -30,3 +30,20 @@ User.create!(name: "Example User",
                activated: true,
                activated_at: Time.zone.now)
 end
+
+users = User.order(:created_at).take(7)
+users.each do |user|
+  25.times do
+    quote = Faker::Shakespeare.hamlet_quote.truncate(140)
+    user.microposts.create!(content: quote)
+
+    quote = Faker::Shakespeare.as_you_like_it_quote.truncate(140)
+    user.microposts.create!(content: quote)
+
+    quote = Faker::Shakespeare.king_richard_iii_quote.truncate(140)
+    user.microposts.create!(content: quote)
+
+    quote = Faker::Shakespeare.romeo_and_juliet_quote.truncate(140)
+    user.microposts.create!(content: quote)
+  end
+end
