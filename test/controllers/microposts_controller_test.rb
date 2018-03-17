@@ -1,7 +1,22 @@
 require 'test_helper'
 
 class MicropostsControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+
+  def setup
+    @orange_post = microposts(:orange)
+  end
+
+  test "create should redirect when not logged in" do
+    assert_no_difference "Micropost.count" do
+      post microposts_path, params: { micropost: { content: "Random Text" } }
+    end
+    assert_redirected_to login_url
+  end
+
+  test "destroy should redirect when not logged in" do
+    assert_no_difference "Micropost.count" do
+      delete micropost_path(@orange_post)
+    end
+    assert_redirected_to login_url
+  end
 end

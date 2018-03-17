@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :require_login, only: [:index, :edit, :update, :destroy]
+  before_action :logged_in?, only: [:index, :edit, :update, :destroy]
   before_action :current_user?, only: [:edit, :update]
   before_action :admin?, only: :destroy
 
@@ -53,13 +53,6 @@ class UsersController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
-  end
-
-  def require_login
-    unless logged_in?
-      flash[:danger] = "Please log in"
-      redirect_for_login
-    end
   end
 
   def current_user?
