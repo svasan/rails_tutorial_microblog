@@ -25,3 +25,4 @@
 *~
 
 /spring/*.pid
+/public/uploads/*

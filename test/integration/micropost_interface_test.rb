@@ -12,6 +12,7 @@ class MicropostInterfaceTest < ActionDispatch::IntegrationTest
     assert_match @user_foo.name, response.body
     assert_select "form.new_micropost", count: 1
     assert_match "#{@user_foo.microposts.count} microposts", response.body
+    assert_select "input[type=file]"
 
     # Invalid submission
     assert_no_difference 'Micropost.count' do
@@ -20,12 +21,15 @@ class MicropostInterfaceTest < ActionDispatch::IntegrationTest
 
     # Valid submission
     text = "Some Unique Text. Maybe.".reverse
+    picture = fixture_file_upload('test/fixtures/rails.png', 'image/png')
     assert_difference 'Micropost.count', 1 do
-      post microposts_path, params: { micropost: { content: text }}
+      post microposts_path, params: { micropost: { content: text, picture: picture }}
     end
+    assert assigns(:micropost).picture?
     assert_redirected_to root_url
     follow_redirect!
     assert_match text, response.body
+    assert @user_foo.reload.microposts.first.picture?
 
     # Microposts and delete links exist
     microposts = @user_foo.microposts.paginate(page: 1)
