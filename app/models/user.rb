@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :following_relationships,
            class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :following, through: :following_relationships, source: :followed
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -68,6 +69,18 @@ class User < ApplicationRecord
 
   def feed
     microposts
+  end
+
+  def follow(other)
+    following << other
+  end
+
+  def following?(other)
+    following.include?(other)
+  end
+
+  def unfollow(other)
+    following.delete(other)
   end
 
   private
