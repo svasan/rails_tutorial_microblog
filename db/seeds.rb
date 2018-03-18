@@ -47,3 +47,11 @@ users.each do |user|
     user.microposts.create!(content: quote)
   end
 end
+
+
+users = User.all
+first = User.first
+following = users[2..50]
+followers = users[3..40]
+following.each { |f| first.follow(f) }
+followers.each { |f| f.follow(first) }
