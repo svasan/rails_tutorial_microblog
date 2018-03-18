@@ -7,6 +7,10 @@
 	<%= @user.name %>
       </h1>
     </section>
+    <section class="stats">
+      <%= render "shared/stats", user: @user %>
+    </section>
+    <%= render "relationship_form" if has_current_user?%>
   </aside>
   <div class="col-md-8">
     <% if @microposts.any? %>
