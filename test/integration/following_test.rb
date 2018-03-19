@@ -58,4 +58,35 @@ class FollowingTest < ActionDispatch::IntegrationTest
     assert_select 'ul.users', count: 0
   end
 
+  test "standard follow" do
+    user_25 = users(:user_25)
+    assert_difference "@user_foo.following.count", 1 do
+      post relationships_path, params: { followed_id: user_25.id }
+    end
+  end
+
+  test "ajax follow" do
+    user_25 = users(:user_25)
+    assert_difference "@user_foo.following.count", 1 do
+      post relationships_path, params: { followed_id: user_25.id }, xhr: true
+    end
+  end
+
+  test "standard unfollow" do
+    user_25 = users(:user_25)
+    @user_foo.follow(user_25)
+    r = @user_foo.following_relationships.find_by(followed_id: user_25.id)
+    assert_difference "@user_foo.following.count", -1 do
+      delete relationship_path(r)
+    end
+  end
+
+  test "ajax unfollow" do
+    user_25 = users(:user_25)
+    @user_foo.follow(user_25)
+    r = @user_foo.following_relationships.find_by(followed_id: user_25.id)
+    assert_difference "@user_foo.following.count", -1 do
+      delete relationship_path(r), xhr: true
+    end
+  end
 end
