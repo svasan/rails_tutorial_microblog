@@ -48,11 +48,11 @@ class MicropostInterfaceTest < ActionDispatch::IntegrationTest
     assert_select "a", text: "delete", count: 0
 
     # User with no microposts
-    log_in_as(users(:malory))
+    log_in_as(users(:user_25))
     get root_path
     assert_match "0 microposts", response.body
     assert_difference 'Micropost.count', 1 do
-      post microposts_path, params: { micropost: { content: "This is Malory!" }}
+      post microposts_path, params: { micropost: { content: "This is User 25!" }}
     end
     assert_redirected_to root_url
     follow_redirect!

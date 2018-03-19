@@ -88,4 +88,28 @@ class UserTest < ActiveSupport::TestCase
     joe.unfollow(lana)
     assert_not joe.following?(lana)
   end
+
+  test 'feed should have posts of followed users' do
+    foo = users(:foobar)
+    joe = users(:joe)
+    lana = users(:lana)
+    malory = users(:malory)
+
+    foo.microposts.each do |m|
+      assert foo.feed.include?(m)
+    end
+
+    joe.microposts.each do |m|
+      assert foo.feed.include?(m)
+    end
+
+    lana.microposts.each do |m|
+      assert foo.feed.include?(m)
+    end
+
+    malory.microposts.each do |m|
+      assert_not foo.feed.include?(m)
+    end
+  end
+
 end
