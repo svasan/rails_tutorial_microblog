@@ -32,10 +32,12 @@ class MicropostInterfaceTest < ActionDispatch::IntegrationTest
     assert @user_foo.reload.microposts.first.picture?
 
     # Microposts and delete links exist
-    microposts = @user_foo.microposts.paginate(page: 1)
+    microposts = @user_foo.feed.paginate(page: 1)
     microposts.each do |m|
       assert_match ERB::Util.html_escape(m.content), response.body
-      assert_select "a[href=?]", micropost_path(m), text: "delete"
+      if m.user == @user_foo
+        assert_select "a[href=?]", micropost_path(m), text: "delete"
+      end
     end
 
     # Delete works.
